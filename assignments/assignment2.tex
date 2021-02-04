@@ -12,12 +12,12 @@
 }
 
 \newcommand\TheSolution{%
-  \textbf{Solution:}\\%
+  \textbf{Solution \theproblem:}\\%
 }
 
 \newcommand\ASolution{%
   \stepcounter{solution}%
-  \textbf{Solution \thesolution:}\\%
+  \textbf{Solution \theproblem.\thesolution:}\\%
 }
 \parindent 0in
 \parskip 1em
@@ -229,7 +229,7 @@ corresponding DFA and we are allowed to omit inaccesible
 states. This can be done starting at $q_0$ and doing $\delta (q_0, a)$ and $\delta (q_0, 
 b)$ and using the states that we get from that calculation doing the same $\delta$ 
 function for a and b for them. I will do the calculations here in latex and filling in my 
-table as I go along. I will also construct a DFA in JFLIP that will go under the name 
+table as I go along. I will also construct the DFA in JFLIP that will go under the name 
 "3point2ass2.jff".
 
 $\delta (q_0, a) = \delta_n (q_0,a) = \{n_0, m_1\}$ \newline
@@ -274,9 +274,11 @@ $\delta (n_0n_2n_3, a) = \delta_n (n_0,a) \cup \delta_n (n_2,a) \cup \delta_n (n
 $\delta (n_0n_2n_3, b) = \delta_n (n_0,b) \cup \delta_n (n_2,b) \cup \delta_n (n_3,b) = 
 \{n_0, n_1, n_3\}$
 
-What I've done here is calculated the new set for every transitionsfunction starting from 
-$q_0$ and expanding to $q_0$:s next of kin. The structure of the calculations above is 
-every new block of functions is a "sub" set of the previous block.
+What I've done here is calculating the new state given a set of states, then doing this 
+for every set of states I can combine given my old NFA. We start from $q_0$ and expand 
+from there. The structure of the calculations above is every new block of functions is a 
+"sub" set of the previous block and when combining every unique set left of the equality 
+sign we get our new table as I've done on the next page.
 
 \begin{table}[ht!]
   \huge
@@ -285,18 +287,18 @@ every new block of functions is a "sub" set of the previous block.
  \hline
  & $State$ & $a$ & $b$ \\ [0.5ex] 
  \hline\hline
- $\rightarrow$ $*$    & $q_0$ & $n_0m_1$ & $n_0n_1m_0$ \\ 
-    \hfill            & $n_0m_1$ & $n_0$ & $n_0n_1m_2$ \\
-    \hfill $*$        & $n_0n_1m_0$ & $n_0n_2m_1$ & $n_0n_1m_0$ \\
-    \hfill            & $n_0$ & $n_0$ & $n_0n_1$\\
-    \hfill            & $n_0n_1m_2$ & $n_0n_2$ & $n_0n_1m_3$ \\
-    \hfill            & $n_0n_2m_1$ & $n_0n_3$ & $n_0n_1m_2$ \\
-    \hfill            & $n_0n_1$ & $n_0n_2$ & $n_0n_1$ \\
-    \hfill            & $n_0n_2$ & $n_0n_3$ & $n_0n_1$ \\
-    \hfill $*$        & $n_0n_1m_3$ & $n_0n_2m_1$ & $n_0n_1m_3$ \\
-    \hfill $*$        & $n_0n_3$ & $n_0n_3$ & $n_0n_1m_3$ \\
-    \hfill $*$        & $n_0n_1n_3$ & $n_0n_2n_3$ & $n_0n_1n_3$ \\
-    \hfill $*$        & $n_0n_2n_3$ & $n_0n_3$ & $n_0n_1n_3$ \\ [1ex]
+   $\rightarrow$ $*$   (q0) & $q_0$ & $n_0m_1$ & $n_0n_1m_0$ \\ 
+    \hfill             (q1) & $n_0m_1$ & $n_0$ & $n_0n_1m_2$ \\
+    \hfill $*$         (q2) & $n_0n_1m_0$ & $n_0n_2m_1$ & $n_0n_1m_0$ \\
+    \hfill             (q3) & $n_0$ & $n_0$ & $n_0n_1$\\
+    \hfill             (q4) & $n_0n_1m_2$ & $n_0n_2$ & $n_0n_1m_3$ \\
+    \hfill             (q5) & $n_0n_2m_1$ & $n_0n_3$ & $n_0n_1m_2$ \\
+    \hfill             (q6) & $n_0n_1$ & $n_0n_2$ & $n_0n_1$ \\
+    \hfill             (q7) & $n_0n_2$ & $n_0n_3$ & $n_0n_1$ \\
+    \hfill $*$         (q8) & $n_0n_1m_3$ & $n_0n_2m_1$ & $n_0n_1m_3$ \\
+    \hfill $*$         (q9) & $n_0n_3$ & $n_0n_3$ & $n_0n_1n_3$ \\
+    \hfill $*$         (q10)& $n_0n_1n_3$ & $n_0n_2n_3$ & $n_0n_1n_3$ \\
+    \hfill $*$         (q11) & $n_0n_2n_3$ & $n_0n_3$ & $n_0n_1n_3$ \\ [1ex]
  \hline
  \end{tabular}
 \end{table}
