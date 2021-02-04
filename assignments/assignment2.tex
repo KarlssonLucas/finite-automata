@@ -47,12 +47,12 @@
 \end{tikzpicture}
 \end{center}
 
-Basically, you can describe the language as following, every word has to either
-tart by one or more b's or one c, if you start on one or more b's one a is 
+Basically, you can describe the language as following, every word either
+start by one or more b's or one c, if you start on one or more b's one a is 
 directly followed then you can have zero or more b's or c's followed by another
 a and then in the end you can have zero or more a's b's or c's. If you started 
 with a c it will be followed by zero or more a's b's or c's. We could write it more 
-formally as a regular expression "$b^*a(b+c)^*a(a+b+c)^* + b^*c(a+b+c)^*$"
+formally as a regular expression \textbf{$b^*a(b+c)^*a(a+b+c)^* + b^*c(a+b+c)^*$}
 
 Example of a word that would be accpeted by this language would be "bbabca" or just 
 plain "c".
@@ -65,10 +65,10 @@ plain "c".
 \begin{center}
     "The words that is accepted by our language can start with 
     either one b or zero or more a's if we start with a b it 
-    has to be followed by another a or one or more b and then 
+    has to be followed by another a or one or more b's and then 
     followed by an a into a unaccepted state that you cannot 
     escape. This translates into as soon as we get two or more 
-    b's we will get stuck."
+    b's we will get stuck and the words is not accepted by our language"
 \end{center}
 
 \ASolution Here we want to define a DFA B over $\Sigma$ that 
@@ -80,14 +80,14 @@ occurrences of a. The solution for this is in the file
     "The words that is accepted by our language can start with 
     either zero or more b's or one a followed by zero or more 
     b's followed by another a and we are back where we started.
-    This way we only allow a even number of a's before we reach
+    This way we will have a even number of a's everytime we reach
     our final state." 
 \end{center}
 \newpage
 \ASolution Here we want to construct $A \cdot B$ i.e use the product construction to 
 build an automaton that accepts the language $L(A) \cap L(B)$. The solution for this 
 is in the file "2point3ass2.jff" I wont explain what the automata does here because 
-it heavily relies on my previous answers but i can explain the process of combining 
+it heavily relies on my previous answers but I can explain the process of combining 
 the two DFAs. To combine two DFAs we calculate $A \cdot B$ by doing 
 $\{A_0,A_1,A_2,A_3\} \cdot \{B_0,B_1\}$ the new states will be:
 \begin{center}
@@ -97,13 +97,28 @@ $\{A_0,A_1,A_2,A_3\} \cdot \{B_0,B_1\}$ the new states will be:
 To calculate the states and their transition functions we use the new states 
 above and combine what a does to $A_0$ and $B_0$ and same for b and then the 
 next state in the set. Below is the table that you can create by doing the 
-method above.
+method above. The calculations looks as following:
+
+$\delta (A_0B_0, a) = \delta (A_0, a) \cup \delta (B_0, a) = \{A_0, B_1\}$ \newline
+$\delta (A_0B_0, b) = \delta (A_0, b) \cup \delta (B_0, b) = \{A_1, B_0\}$
+
+$\delta (A_0B_1, a) = \delta (A_0, a) \cup \delta (B_1, a) = \{A_0, B_0\}$ \newline
+$\delta (A_0B_1, b) = \delta (A_0, b) \cup \delta (B_1, b) = \{A_1, B_0\}$
+\hfill
+. \\
+. \\
+. \\
+. \\
+. \\
+$\delta (A_3B_1, a) = \delta (A_3, a) \cup \delta (B_1, a) = \{A_3, B_0\}$ \newline
+$\delta (A_3B_1, b) = \delta (A_3, b) \cup \delta (B_1, b) = \{A_3, B_1\}$ \newline
+
 
 \begin{table}[h!]
 \centering
  \begin{tabular}{||c c c c||} 
  \hline
- & State & a & b \\ [0.5ex] 
+ & $State$ & $a$ & $b$ \\ [0.5ex] 
  \hline\hline
  $\rightarrow$ $*$ (q0) & $A_0B_0$ & $A_0B_1$ & $A_1B_0$ \\ 
     \hfill          (q1) & $A_0B_1$ & $A_0B_0$ & $A_1B_1$ \\
@@ -211,6 +226,78 @@ have solved the problem. This is also the automata found in the file "3point1ass
  
 \ASolution We want to use the subset construction to build a 
 corresponding DFA and we are allowed to omit inaccesible 
-states.asd
+states. This can be done starting at $q_0$ and doing $\delta (q_0, a)$ and $\delta (q_0, 
+b)$ and using the states that we get from that calculation doing the same $\delta$ 
+function for a and b for them. I will do the calculations here in latex and filling in my 
+table as I go along. I will also construct a DFA in JFLIP that will go under the name 
+"3point2ass2.jff".
 
+$\delta (q_0, a) = \delta_n (q_0,a) = \{n_0, m_1\}$ \newline
+$\delta (q_0, b) = \delta_n (q_0,b) = \{n_0, n_1, m_0\}$
+
+$\delta (n_0m_1, a) = \delta_n (n_0,a) \cup \delta_n (m_1,a) = \{n_0\}$ \newline
+$\delta (n_0m_1, b) = \delta_n (n_0,b) \cup \delta_n (m_1,b) = \{n_0,n_1,m_2\}$ \newline
+$\delta (n_0n_1m_0, a) = \delta_n (n_0,a) \cup \delta_n (n_1,a) \cup \delta_n (m_0,a) = 
+\{n_0, n_2, m_1\}$ \newline
+$\delta (n_0n_1m_0, b) = \delta_n (n_0,b) \cup \delta_n (n_1,b) \cup \delta_n (m_0,
+b) = \{n_0, n_1, m_0\}$
+
+$\delta (n_0, a) = \delta_n (n_0, a) = \{n_0\}$\newline
+$\delta (n_0, b) = \delta_n (n_0, b) = \{n_0, n_1\}$\newline
+$\delta (n_0n_1m_2, a) = \delta_n (n_0,a) \cup \delta_n (n_1,a) \cup \delta_n (m_2,
+a) = \{n_0, n_2\}$ \newline
+$\delta (n_0n_1m_2, b) = \delta_n (n_0,b) \cup \delta_n (n_1,b) \cup \delta_n (m_2,b) = 
+\{n_0, n_1, m_3\}$ \newline
+$\delta (n_0n_2m_1, a) = \delta_n (n_0,a) \cup \delta_n (n_2, a) \cup \delta_n (m_1,
+a) = \{n_0, n_3\}$ \newline
+$\delta (n_0n_2m_1, b) = \delta_n (n_0,b) \cup \delta_n (n_2,b) \cup \delta_n (m_1,
+b) = \{n_0, n_1, m_2\}$
+
+$\delta (n_0n_1, a) = \delta_n (n_0,a) \cup \delta_n (n_1,a) = \{n_0, n_2\}$ \newline
+$\delta (n_0n_1, b) = \delta_n (n_0,b) \cup \delta_n (n_1,b) = \{n_0, n_1\}$ \newline
+$\delta (n_0n_2, a) = \delta_n (n_0,a) \cup \delta_n (n_2,b) = \{n_0, n_3\}$ \newline
+$\delta (n_0n_2, b) = \delta_n (n_0,b) \cup \delta_n (n_2,b) = \{n_0, n_1\}$ \newline
+$\delta (n_0n_1m_3, a) = \delta_n (n_0,a) \cup \delta_n (n_1,a) \cup \delta_n (m_3,a) = 
+\{n_0, n_2, m_1\}$ \newline
+$\delta (n_0n_1m_3, b) = \delta_n (n_0,b) \cup \delta_n (n_1,b) \cup \delta_n (m_3,b) = 
+\{n_0, n_1, m_3\}$ \newline
+$\delta (n_0n_3, a) = \delta_n (n_0,a) \cup \delta_n (n_3,a) = \{n_0, n_3\}$ \newline
+$\delta (n_0n_3, b) = \delta_n (n_0,b) \cup \delta_n (n_3,b) = \{n_0, n_1, n_3\}$
+
+$\delta (n_0n_1n_3, a) = \delta_n (n_0,a) \cup \delta_n (n_1,a) \cup \delta_n (n_3,a) = 
+\{n_0, n_2, n_3\}$ \newline
+$\delta (n_0n_1n_3, b) = \delta_n (n_0,b) \cup \delta_n (n_1,b) \cup \delta_n (n_3,b) = 
+\{n_0, n_1, n_3\}$ 
+
+$\delta (n_0n_2n_3, a) = \delta_n (n_0,a) \cup \delta_n (n_2,a) \cup \delta_n (n_3,a) = 
+\{n_0, n_3\}$ \newline
+$\delta (n_0n_2n_3, b) = \delta_n (n_0,b) \cup \delta_n (n_2,b) \cup \delta_n (n_3,b) = 
+\{n_0, n_1, n_3\}$
+
+What I've done here is calculated the new set for every transitionsfunction starting from 
+$q_0$ and expanding to $q_0$:s next of kin. The structure of the calculations above is 
+every new block of functions is a "sub" set of the previous block.
+
+\begin{table}[ht!]
+  \huge
+  \centering
+ \begin{tabular}{||c c c c||} 
+ \hline
+ & $State$ & $a$ & $b$ \\ [0.5ex] 
+ \hline\hline
+ $\rightarrow$ $*$    & $q_0$ & $n_0m_1$ & $n_0n_1m_0$ \\ 
+    \hfill            & $n_0m_1$ & $n_0$ & $n_0n_1m_2$ \\
+    \hfill $*$        & $n_0n_1m_0$ & $n_0n_2m_1$ & $n_0n_1m_0$ \\
+    \hfill            & $n_0$ & $n_0$ & $n_0n_1$\\
+    \hfill            & $n_0n_1m_2$ & $n_0n_2$ & $n_0n_1m_3$ \\
+    \hfill            & $n_0n_2m_1$ & $n_0n_3$ & $n_0n_1m_2$ \\
+    \hfill            & $n_0n_1$ & $n_0n_2$ & $n_0n_1$ \\
+    \hfill            & $n_0n_2$ & $n_0n_3$ & $n_0n_1$ \\
+    \hfill $*$        & $n_0n_1m_3$ & $n_0n_2m_1$ & $n_0n_1m_3$ \\
+    \hfill $*$        & $n_0n_3$ & $n_0n_3$ & $n_0n_1m_3$ \\
+    \hfill $*$        & $n_0n_1n_3$ & $n_0n_2n_3$ & $n_0n_1n_3$ \\
+    \hfill $*$        & $n_0n_2n_3$ & $n_0n_3$ & $n_0n_1n_3$ \\ [1ex]
+ \hline
+ \end{tabular}
+\end{table}
 \end{document}
