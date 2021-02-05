@@ -145,7 +145,7 @@ where every occurence of a is directly followed by two or more
 occurences of b.
 
 Defining M, we want M to only contain words that contain the substring "baa". 
-We can do this using the following automata:
+We can do this using the following automata, also found in "2point1mass2.jff"
 
 \begin{center}
 \begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
@@ -164,8 +164,9 @@ We can do this using the following automata:
 \end{tikzpicture}
 \end{center}
 
-Defining N, we want N where every time we have a occurence of a is followed by two occurences of b. We can do this using the following automata:
-
+Defining N, we want N where every time we have a occurence of a is followed by two 
+occurences of b. We can do this using the following automata, also found in "2point2nass2.
+jff"
 \begin{center}
 \begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
   \node[initial,state] (s0) [left of=s1]    {$n_0$};
@@ -183,8 +184,8 @@ Defining N, we want N where every time we have a occurence of a is followed by t
 \end{center}
 
 Now we have to combine M and N by creating a new initial state that acts 
-as both the M initial state and N initial state this can be done by adding
-the $q_0$ state below 
+as both the M initial state and N initial state at the same time, this can be done by
+adding the $q_0$ state below 
 \begin{center}
 \begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
   \node[state] (n0)   {$n_0$};

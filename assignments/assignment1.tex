@@ -25,14 +25,14 @@
 \fbox{\fbox{\parbox{4in}{\centering Assignment 1 by Lucas Karlsson}}}
 \end{center}
 
-\Problem Prove using induction that, for every finite alphabet $\Sigma, \forall n \in N. \mid $\Sigma^n$\mid = \mid\Sigma\mid ^n.$
+\Problem Prove using induction that, for every finite alphabet $\Sigma, \forall n \in N. \mid \Sigma^n\mid = \mid\Sigma\mid ^n.$
 
 \TheSolution  Firstly, we need to show that $\mid S \cdot \Sigma \mid = \mid S \mid  
 \cdot \mid \Sigma \mid$, where $\cdot$ is the concatenation operator. 
 
 By definition: $s \in S$ and $\sigma \in \Sigma$ this implies that also the string $s \cdot \sigma$ is in $S \cdot \Sigma$ and this string is different for every combination of s and $\sigma$
 
-Now we can show $ $\mid$\Sigma^n$\mid = $\mid\Sigma\mid^n$.
+Now we can show $\mid\Sigma^n\mid = \mid\Sigma\mid^n$.
 
 \textbf{Base case: $n = 0$}
 
@@ -48,7 +48,7 @@ The length of a list with a empty string inside is always one, by definition. An
 
 \textbf{Induction} when n = k+1
 
-$\Sigma^{k+1} = \Sigma^k \cdot \Sigmas$ implies that $\mid\Sigma^{k+1}\mid = 
+$\Sigma^{k+1} = \Sigma^k \cdot \Sigma$ implies that $\mid\Sigma^{k+1}\mid = 
 \mid\Sigma^k \cdot \Sigma\mid$ and we established before that $\mid\Sigma^k \cdot 
 \Sigma\mid = \mid\Sigma^k\mid \cdot \mid\Sigma\mid$ and $\mid\Sigma\mid^k \cdot 
 \mid\Sigma\mid^1 = \mid\Sigma\mid^{k+1}$
@@ -135,7 +135,7 @@ $2\#_b (buavaw) = 2(1 + \#_b (uvw)) = 2 + \#_a (uvw)$ \newline
 Our function $\#_a(w) = 2\#_b(w)$ holds for all the contents in our language S.
 
 \hfill
-\square
+$\square$
 \newpage
 
 \Problem Let $\Sigma = \{0\}$ and define $f,g,h \in \Sigma^* \rightarrow N$
@@ -179,7 +179,7 @@ Doing the same thing for the second part of the boolean expression $h(0^{k+1})$ 
 $True \wedge True = True$ 
 
  \hfill 
- \square
+ $\square$
  \newpage
  
  The final part is now trivial, we can easily prove $\forall n \in N. f(0^n) = 1+n$ because we know that $f(0^n)$ is equal to $h(0^n) + 2g(0^n)$ by the definition of our function f. We can also see that $h(0^n) = n-1$ and $2g(0^n) = 2*1$ summing these up gives us, and we are now done!
@@ -187,6 +187,6 @@ $True \wedge True = True$
      $f(0^n) = n+1$
  \end{center}
 \hfill
-\square
+$\square$
 
 \end{document}
