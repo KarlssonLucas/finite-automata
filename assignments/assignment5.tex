@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\newcounter{problem}
+\newcounter{solution}
+\newcounter{step}
+
+\newcommand\Step{%
+  \stepcounter{step}%
+  \textbf{Step \thestep. }%
+}
+
+\newcommand\Problem{%
+  \stepcounter{problem}%
+  \textbf{\theproblem.}~%
+  \setcounter{solution}{0}%
+  \setcounter{step}{0}%
+}
+
+\newcommand\TheSolution{%
+  \setcounter{step}{0}%
+  \textbf{Solution \theproblem:}\\%
+}
+
+\newcommand\ASolution{%
+  \setcounter{step}{0}%
+  \stepcounter{solution}%
+  \textbf{Solution \theproblem.\thesolution:}\\%
+}
+
+\parindent 0in
+\parskip 1em
+\begin{document}
+
+\begin{center}
+\fbox{\fbox{\parbox{4in}{\centering Assignment 5 by Lucas Karlsson}}}
+\end{center}
+
+Consider the following language over the alphabet $\Sigma = \{a,b\}: 
+\newline M=\{a^ib^{i+j}|i,j \in \mathbf{N}\}$
+
+\Problem Give an ambiguous context-free grammar $G = (\{S\}, \Sigma, P, S)$ for $M$. Note that the grammar
+should have exactly one nonterminal, $S$.
+
+\Problem Prove that $G$ is ambiguous.
+
+\Problem Define a recursive function (in haskell ofc) that takes two natural numbers i and j and returns
+a proof showing that the string $a^ib^{i+j}$ can be derived from $S$. The proof should be represented by a 
+list of derivation steps:
+
+\begin{itemize}
+  \item The derivation step $\alpha A \beta \implies \alpha \gamma \beta$ should be represented by the 
+    four tuple $(\alpha, A, \gamma, \beta)$
+  \item If the list contains $n$ elements, then there should be a derivation \newline $S 
+    \implies^* a^ib^{i+j}$ of the length n, where k-th step of the derivation matches the k-th element
+    of the list.
+\end{itemize}
+
+\Problem Prove $\forall w \in L(G,S). w \in M$, where $L(\_,\_)$ is the inductive construction introduced
+in the eleventh lecture under the heading of \textbf{Recursive inference}.
+
+\Problem Give an unambiguous context-free grammar $G'$ for $M$.
+
+\Problem (\textbf{BONUS}) Is there an algorithm for checking whether an arbitrary context-free
+grammar implements the language $M$?
+
+\end{document}
