@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{amssymb}
+\usepackage{fancyvrb,newverbs,xcolor}
 \usepackage{array}
 \usepackage{amsmath}
 \usepackage{subfigure}
@@ -8,6 +9,8 @@
 \newcounter{problem}
 \newcounter{solution}
 \newcounter{step}
+
+\definecolor{cverbbg}{gray}{0.93}
 
 \newcommand\Step{%
   \stepcounter{step}%
@@ -32,6 +35,26 @@
   \textbf{Solution \theproblem.\thesolution:}\\%
 }
 
+\newenvironment{lcverbatim}
+ {\SaveVerbatim{cverb}}
+ {\endSaveVerbatim
+  \flushleft\fboxrule=0pt\fboxsep=.5em
+  \colorbox{cverbbg}{%
+    \makebox[\linewidth][c]{\BUseVerbatim{cverb}}%
+  }
+  \endflushleft
+}
+
+\newenvironment{lcverb}
+ {\SaveVerbatim{cverb}}
+ {\endSaveVerbatim
+  \flushleft\fboxrule=0pt\fboxsep=.5em
+  \colorbox{cverbbg}{%
+    \makebox[\dimexpr\linewidth-5\fboxsep][c]{\BUseVerbatim{cverb}}%
+  }
+  \endflushleft
+}
+
 \parindent 0in
 \parskip 1em
 \begin{document}
@@ -46,25 +69,119 @@ Consider the following language over the alphabet $\Sigma = \{a,b\}:
 \Problem Give an ambiguous context-free grammar $G = (\{S\}, \Sigma, P, S)$ for $M$. Note that the grammar
 should have exactly one nonterminal, $S$.
 
+\TheSolution We have our language $M = \{a^ib^{i+j} | i,j \in \mathbf{N}\}$ over the alphabet $\Sigma = 
+\{a,b\}$, our language will then only contain strings that starts with zero or more a's followed by the same 
+amount of b's or more. Now we only need to define the productions for the language:
+
+\begin{itemize}
+  \item[] P $\rightarrow$ $\epsilon$
+  \item[] P $\rightarrow$ $Pb$
+  \item[] P $\rightarrow$ $aPb$
+\end{itemize}
+
+These are all the rules we need to define for our CFG and we have \newline $G = \{\{P\}, \{a,b\}\, A, P\}$ where
+$A$ is the set of rules for the language.
+
 \Problem Prove that $G$ is ambiguous.
 
+\TheSolution
+To prove that $G$ is ambiguous we have to be able to derive the same string in two or more different ways 
+doing only left-most derivation or right-most derivation. We are going to use left-most 
+derivation for this and doing it on the string $abb$.
+
+\begin{itemize}
+  \item[] $P$ $\underset{lm}{\Rightarrow}$ $Pb$ $\underset{lm}{\Rightarrow}$ $aPbb$ $\underset{lm}{\Rightarrow}$ $abb$ 
+  \item[] $P$ $\underset{lm}{\Rightarrow}$ $aPb$ $\underset{lm}{\Rightarrow}$ $aPbb$ $\underset{lm}{\Rightarrow}$ $abb$
+\end{itemize}
+\hfill $\square$
+
+\newpage
 \Problem Define a recursive function (in haskell ofc) that takes two natural numbers i and j and returns
 a proof showing that the string $a^ib^{i+j}$ can be derived from $S$. The proof should be represented by a 
 list of derivation steps:
 
 \begin{itemize}
-  \item The derivation step $\alpha A \beta \implies \alpha \gamma \beta$ should be represented by the 
+  \item The derivation step $\alpha A \beta \Rightarrow \alpha \gamma \beta$ should be represented by the 
     four tuple $(\alpha, A, \gamma, \beta)$
   \item If the list contains $n$ elements, then there should be a derivation \newline $S 
-    \implies^* a^ib^{i+j}$ of the length n, where k-th step of the derivation matches the k-th element
+    \overset{*}{\Rightarrow} a^ib^{i+j}$ of the length n, where k-th step of the derivation matches the k-th 
+    element
     of the list.
 \end{itemize}
 
+\TheSolution
+
+\begin{figure}[h]
+\centering
+\small
+\begin{lcverbatim}
+type Set = (String, String, String, String)
+
+run :: Int -> Int -> IO ()
+run i j = mapM_ printset \$ derive i j [("","P","P","")]
+
+derive :: Int -> Int -> [Set] -> [Set]
+derive 0 0 sets = tail $ sets ++ [(removeP $ last sets)]
+  where removeP (x,y,z,v) = (x,x++z++v,[c | c <- z, c /= 'P'], v)
+
+derive i j sets 
+  | i > 0 = derive (i-1) j $ sets ++ [deriveset "a" $ last sets]
+  | j > 0 = derive i (j-1) $ sets ++ [deriveset "b" $ last sets]
+ 
+deriveset :: String -> Set -> Set
+deriveset "a" (x,y,z,v) = ("a", old, old, "b") where old = x++y++v
+deriveset "b" (x,y,z,v) = ("", old, old, "b") where old = x++y++v
+ 
+printset :: Set -> IO ()
+printset (x,y,z,v) = putStrLn (y++" => "++x++z++v)
+
+\end{lcverbatim}
+  \caption{Haskell solution to question 3.}
+\end{figure}
+
+
+\begin{figure}[h]
+  \centering
+  \begin{minipage}[b]{0.32\textwidth}
+    \begin{lcverb}
+*Main> run 2 1
+P => aPb
+aPb => aaPbb
+aaPbb => aaPbbb
+aaPbbb => aabbb
+    \end{lcverb}
+  \end{minipage}
+  %
+  \begin{minipage}[b]{0.32\textwidth}
+    \begin{lcverb}
+*Main> run 1 2
+P => aPb
+aPb => aPbb
+aPbb => aPbbb
+aPbbb => abbb
+  \end{lcverb}
+\end{minipage}
+\begin{minipage}[b]{0.32\textwidth}
+    \begin{lcverb}
+*Main> run 3 0
+P => aPb
+aPb => aaPbb
+aaPbb => aaaPbbb
+aaaPbbb => aaabbb
+    \end{lcverb}
+  \end{minipage}
+\caption{Sample outputs from running the haskell function \textbf{run}.}
+\end{figure}
+
+
+\newpage
 \Problem Prove $\forall w \in L(G,S). w \in M$, where $L(\_,\_)$ is the inductive construction introduced
 in the eleventh lecture under the heading of \textbf{Recursive inference}.
 
+\newpage
 \Problem Give an unambiguous context-free grammar $G'$ for $M$.
 
+\newpage
 \Problem (\textbf{BONUS}) Is there an algorithm for checking whether an arbitrary context-free
 grammar implements the language $M$?
 

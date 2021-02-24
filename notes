@@ -1,0 +1,17 @@
+i = 2 j = i + 1 = 3 = aabbb
+P -> aPb i=1 j=3
+aPb -> aaPbb i = 0 j = 3
+aaPbb -> aaPbbb i= 0 j = 2
+aaPbbb -> aaPbbbb i = 0 j =1
+aaPbbbb -> aabbbst
+bb i = 0 j = 0
+
+
+p -> p (,p,p,)
+p -> aPb ("a", p, p, "b")
+aPb -> aPbb ("",aPb, aPb,b)
+
+
+
+
+
